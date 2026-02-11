@@ -13,3 +13,5 @@ public:
     }
 };
 auto init = atexit([]() { ofstream("display_runtime.txt") << "0";});
+auto iit = atexit([]() { ofstream("display_memory.txt") << "0";});
+
