@@ -1,14 +1,23 @@
 class Solution {
 public:
     int longestBalanced(string s) {
+        int n = s.size();
         int maxLen = 0;
-        for(int i = 0; i < s.size(); i++) {
-            unordered_map<char, int> mp;
+
+        for(int i = 0; i < n; i++) {
+            int freq[26] = {0};
             int maxFreq = 0;
-            for(int j = i; j < s.size(); j++) {
-                mp[s[j]]++;
-                maxFreq = max(mp[s[j]], maxFreq);
-                if(maxFreq * mp.size() == j - i + 1) {
+            int distinct = 0;
+
+            for(int j = i; j < n; j++) {
+                int idx = s[j] - 'a';
+
+                if(freq[idx] == 0) distinct++;
+                freq[idx]++;
+
+                maxFreq = max(maxFreq, freq[idx]);
+
+                if(maxFreq * distinct == j - i + 1) {
                     maxLen = max(maxLen, j - i + 1);
                 }
             }
