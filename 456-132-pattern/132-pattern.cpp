@@ -15,7 +15,7 @@ public:
         for(int i = n - 1; i >= 0; i--) {
 
             while(!st.empty() && st.top() < nums[i]) {
-                k_max = max(st.top(), k_max);
+                k_max = st.top();
                 st.pop();
             }
 
