@@ -12,11 +12,16 @@ public:
             if(s[i] == '(') {
                 st.push(i);
             } else {
-                st.pop();  
-                if(st.empty()) {
-                    st.push(i); 
+                if(!st.empty() && st.top() != -1 && s[st.top()] == '(') {
+                    st.pop();  
+                    if(!st.empty()) {
+                        len = max(len, i - st.top());
+                    } else {
+                        len = max(len, i + 1);  
+                    }
                 } else {
-                    len = max(len, i - st.top());  
+                   
+                    st.push(i);
                 }
             }
         }
