@@ -11,9 +11,8 @@ public:
         int ans = INT_MAX;
 
         for (auto& [key, vec] : mp) {
-            // Need at least 3 indices
+
             if (vec.size() >= 3) {
-                // Check every 3 consecutive indices
                 for (int i = 0; i + 2 < (int)vec.size(); i++) {
                     int p = vec[i];
                     int q = vec[i + 1];
