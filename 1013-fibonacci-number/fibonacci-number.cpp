@@ -15,7 +15,7 @@ public:
         int curr = 0;
 
         for(int i = 2; i <= n; i++) {
-            int temp = curr;
+            // int temp = curr;
             curr = prev1 + prev2;
             prev2 = prev1;
             prev1 = curr;
