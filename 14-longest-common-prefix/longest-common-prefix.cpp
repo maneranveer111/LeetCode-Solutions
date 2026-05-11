@@ -5,21 +5,19 @@ public:
         string ans = "";
 
         for(int i = 0; i < strs.size(); i++) {
-            if(st.empty())
-                st.push(strs[i]);
+            if(i == 0)
+                ans = strs[i];
             else {
-                string temp = st.top();
-                st.pop();
                 int j = 0;
-                while(j < temp.size() && j < strs[i].size() && strs[i][j] == temp[j])
+                while(j < ans.size() && j < strs[i].size() && strs[i][j] == ans[j])
                     j++;
 
-                st.push(temp.substr(0, j));
+                ans = ans.substr(0, j);
 
             }
 
         }
 
-        return st.top();
+        return ans;
     }
 };
