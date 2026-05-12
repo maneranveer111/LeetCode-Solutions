@@ -23,9 +23,17 @@ public:
     }
 
     int change(int amount, vector<int>& coins) {
-        int n = coins.size();
-        vector<vector<int>> dp(n, vector<int>(amount + 1, -1));
+        vector<long long> dp(amount + 1, 0);
+        dp[0] = 1;
 
-        return helper(coins, dp, amount, n - 1);
+        for(int coin : coins) {
+            for(int i = coin; i <= amount; i++) {
+                dp[i] += dp[i - coin];
+                if(dp[i] > INT_MAX)       // cap to prevent overflow
+                    dp[i] = INT_MAX;
+            }
+        }
+
+        return (int)dp[amount];
     }
 };
