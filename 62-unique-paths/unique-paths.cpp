@@ -20,8 +20,25 @@ public:
         // vector<vector<int>> visited(n)
         n = p;
         m = q;
-        vector<vector<int>> dp(n, vector<int>(m, -1));
+        // vector<vector<int>> dp(n, vector<int>(m, -1));
+        vector<vector<int>> dp(n, vector<int>(m, 0));
+
+        dp[n-1][m-1] = 1;
+
+        for(int i = n-1; i >= 0; i--) {
+            for(int j = m-1; j >= 0; j--) {
+                if(i == n-1 && j == m-1) continue;
+
+                int down  = (i+1 < n) ? dp[i+1][j] : 0;
+                int right = (j+1 < m) ? dp[i][j+1] : 0;
+
+                dp[i][j] = down + right;
+            }
+        }
+
+        return dp[0][0];
         
-        return helper(dp, 0, 0);
+        
+        // return helper(dp, 0, 0);
     }
 };
