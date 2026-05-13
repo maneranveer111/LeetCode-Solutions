@@ -1,20 +1,26 @@
 class Solution {
 public:
     int minimumEffort(vector<vector<int>>& tasks) {
-        // Sort by (minimum - actual) descending
-        sort(tasks.begin(), tasks.end(), [](const vector<int>& a, const vector<int>& b) {
+        sort(tasks.begin(), tasks.end(), [](auto &a, auto &b) {
             return (a[1] - a[0]) > (b[1] - b[0]);
         });
 
-        int ans = 0, cur = 0;  // ans = answer so far, cur = current energy
-
-        for (auto& t : tasks) {
-            int actual = t[0], minimum = t[1];
-            if (cur < minimum) {
-                ans += minimum - cur;  // top up energy just enough
-                cur = minimum;
+        int n = tasks.size();
+        int ans = 0, curr = 0;
+        for(int i = 0; i < n; i++) {
+            if(i == 0) {
+                ans = tasks[i][1];
+                curr = tasks[i][1] - tasks[i][0];
             }
-            cur -= actual;  // spend energy doing the task
+            else {
+                if(curr < tasks[i][1]) {
+                    ans += (tasks[i][1] - curr);
+                    curr = tasks[i][1] - tasks[i][0];
+                } 
+                else {
+                    curr -= tasks[i][0];
+                }
+            }
         }
 
         return ans;
