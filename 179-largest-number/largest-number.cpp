@@ -1,21 +1,22 @@
 class Solution {
 public:
     string largestNumber(vector<int>& nums) {
-        vector<string> strNums;
-        for (int num : nums) {
-            strNums.push_back(to_string(num));
+        vector<string> store(nums.size());
+
+        for(int i = 0; i < nums.size(); i++) {
+            store[i] = to_string(nums[i]);
         }
 
-        sort(strNums.begin(), strNums.end(), [](const string& x, const string& y) {
-            return x + y > y + x;
+        sort(store.begin(), store.end(), [](const string& a, const string& b) {
+            return a + b > b + a;
         });
 
         string ans = "";
 
-        for(string st : strNums) {
-            ans += st;
+        for(int i = 0; i < nums.size(); i++) {
+            ans += store[i];
         }
-        
+
         return (ans[0] == '0') ? "0" : ans;
     }
 };
