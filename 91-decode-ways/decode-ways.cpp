@@ -21,7 +21,24 @@ public:
     }
 
     int numDecodings(string s) {
-        vector<int> dp(s.size(), -1);
-        return helper(s, dp, 0);
+        // vector<int> dp(s.size(), -1);
+        vector<int> dp(s.size() + 1, 0);
+        dp[s.size()] = 1;
+
+        for(int i = s.size() - 1; i >= 0; i--) {
+            int single = 0;
+            if(s[i] - '0' >= 1 && s[i] - '0' <= 9)   
+                single = dp[i + 1];
+        
+            int two = 0;
+            if(i != s.size() - 1)
+                if(s[i] != '0' && stoi(s.substr(i, 2)) <= 26)
+                    two = dp[i + 2];
+            
+            dp[i] = single + two;
+        }
+
+        // return helper(s, dp, 0);
+        return dp[0];
     }
 };
