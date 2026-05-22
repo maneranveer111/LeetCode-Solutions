@@ -8,9 +8,7 @@ public:
             return intervals[i][0] < intervals[j][0];
         });   
 
-        // for(int i = 0; i < idx.size(); i++)
-        //     cout << idx[i] << " ";
-        // cout << endl; 
+        
 
         vector<int> ans(intervals.size());
 
