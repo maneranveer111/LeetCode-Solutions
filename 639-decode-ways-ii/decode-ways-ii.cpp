@@ -61,8 +61,57 @@ public:
     }
 
     int numDecodings(string s) {
-        vector<int> memo(s.size(), -1);
-        return helper(s, 0, memo);
+        // vector<int> memo(s.size(), -1);
+        vector<int> dp(s.size() + 1, 0);
+        dp[s.size()] = 1;
+
+        for(int idx = s.size() - 1; idx >= 0; idx--) {
+            if(s[idx] == '*') {
+                int sStr = 0, strDig = 0, digStr = 0, strStr = 0;
+
+                sStr = 9LL * dp[idx + 1] % MOD; 
+
+                if(idx != s.size() - 1) {
+                    if(s[idx + 1] != '*') {
+                        int mul = twoCharWays(s[idx + 1]);
+
+                        strDig = mul * dp[idx + 2] % MOD;
+                    }
+                    else {
+                        strStr = 15LL * dp[idx + 2] % MOD;
+                    }
+                }
+
+                dp[idx] = (sStr +  strDig + strStr) % MOD;
+            }
+            else {
+                if(s[idx] == '0'){
+                    dp[idx] = 0;
+                    continue;
+                }
+
+                int single = 0;
+                if(s[idx] >= '1' && s[idx] <= '9')
+                    single = dp[idx + 1] % MOD;
+                
+                int two = 0;
+                if (idx != s.size() - 1 && s[idx] != '*') {
+                    if (s[idx + 1] == '*') {
+                        if (s[idx] == '1')      
+                            two = 9LL * dp[idx + 2] % MOD;
+                        else if (s[idx] == '2') 
+                            two = 6LL * dp[idx + 2] % MOD;
+                    } 
+                    else if (stoi(s.substr(idx, 2)) <= 26) {
+                        two = dp[idx + 2] % MOD;
+                    }
+                }
+
+                dp[idx] = (single + two) % MOD;
+            }
+        }
+
+        return dp[0];
     }
 };
 
