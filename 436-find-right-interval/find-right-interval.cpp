@@ -8,8 +8,6 @@ public:
             return intervals[i][0] < intervals[j][0];
         });   
 
-        
-
         vector<int> ans(intervals.size());
 
         for(int i = 0; i < intervals.size(); i++) {
