@@ -22,17 +22,40 @@ public:
     
     int maximalSquare(vector<vector<char>>& matrix) {
         m = matrix.size(), n = matrix[0].size();
-        dp.assign(m, vector<int>(n, -1));
-        int ans = 0;
+        // dp.assign(m, vector<int>(n, -1));
+        dp.assign(m, vector<int>(n, 0));
+        // int ans = 0;
 
-        for(int i = 0; i < m; i++){
+        // for(int i = 0; i < m; i++){
+        //     for(int j = 0; j < n; j++) {
+        //         if(matrix[i][j] == '0')
+        //             continue;
+        //         int temp = helper(matrix, i, j);
+        //         ans = max(ans, temp);
+        //     }
+        // }
+
+        for(int i = 0; i < m; i++) {
             for(int j = 0; j < n; j++) {
-                if(matrix[i][j] == '0')
+                if(matrix[i][j] == '0') {
+                    dp[i][j] = 0;
                     continue;
-                int temp = helper(matrix, i, j);
-                ans = max(ans, temp);
+                }
+                
+                int lft = 0, up = 0, lftUp = 0;
+                lft   = (j > 0) ? dp[i][j - 1] : 0;
+                up    = (i > 0) ? dp[i - 1][j] : 0;
+                lftUp = (i > 0 && j > 0) ? dp[i - 1][j - 1] : 0;
+
+                dp[i][j] = 1 + min(lft, min(up, lftUp));
             }
         }
+        
+        int ans = 0;
+        for(int i = 0; i < m; i++)
+            for(int j = 0; j < n; j++)
+                ans = max(ans, dp[i][j]);
+       
         return ans * ans;
     }
 };
