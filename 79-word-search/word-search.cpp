@@ -13,15 +13,15 @@ public:
             return false;
 
         char temp = board[i][j];
-        board[i][j] = '#';           // mark visited in-place
+        board[i][j] = '#';           
 
         bool found = dfs(board, word, i - 1, j, idx + 1) ||
                      dfs(board, word, i + 1, j, idx + 1) ||
                      dfs(board, word, i, j - 1, idx + 1) ||
                      dfs(board, word, i, j + 1, idx + 1);
 
-        board[i][j] = temp;          // restore
-
+        board[i][j] = temp;         
+        
         return found;
     }
 
