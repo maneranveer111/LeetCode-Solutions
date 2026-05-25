@@ -2,26 +2,29 @@ class Solution {
 public:
     vector<int> dp;
     bool helper(string& s, int minJump, int maxJump, int idx) {
-        if(idx == s.size() - 1) 
-            return true;
+        if(idx == (int)s.size() - 1)
+        return true;
 
         if(dp[idx] != -1)
-            return dp[idx];
-        
-        for(int i = idx + minJump; i < s.size(); i++) {
-            bool ans = false;
-            if(i <= min((idx + maxJump), ((int)s.size() - 1)) && s[i] == '0')
-                ans = helper(s, minJump, maxJump, i);
-            if(ans)
-                return true; 
-        }   
+            return dp[idx];  
+
+        int limit = min((int)s.size() - 1, idx + maxJump);  
+
+        for(int i = idx + minJump; i <= limit; i++) {  
+            if(s[i] == '0') {
+                if(helper(s, minJump, maxJump, i))
+                    return dp[idx] = true;   
+            }
+        }
 
         return dp[idx] = false;
     }
 
     bool canReach(string s, int minJump, int maxJump) {
+        // if(s[s.size() - 1] != '0') return false;  t
         // dp.assign(s.size(), -1);
         // return helper(s, minJump, maxJump, 0);
+
         int n = s.size();
         if(s[n - 1] != '0')
             return false;
