@@ -11,18 +11,16 @@ public:
 
         while(low <= high) {
             int mid = low + (high - low) / 2;
-            int i = 0, cap = 0, day = 0;
+            int day = 1, cap = 0;
 
-            while(i < weights.size()) {
-                while(i < weights.size() && cap + weights[i] <= mid) {
-                    cap += weights[i];
-                    i++;
+            for(int i = 0; i < weights.size(); i++) {
+                if(cap + weights[i] > mid) {
+                    day++;
+                    cap = 0;
                 }
-                // i++;/
-                day++;
-                cap = 0;
+                cap += weights[i];
             }
-
+            
             if(day <= days) {
                 ans = mid;
                 high = mid - 1;
