@@ -16,23 +16,20 @@ public:
         int n = nums.size();
         long long ans = LLONG_MIN;
 
-        // All elements outside initially
         multiset<int> outside(nums.begin(), nums.end());
         
         for(int left = 0; left < n; left++) {
             multiset<int> inside;
             long long window_sum = 0;
 
-            // Reset outside for each new left boundary
             outside = multiset<int>(nums.begin(), nums.end());
 
             for(int right = left; right < n; right++) {
-                // Move nums[right] from outside to inside
+
                 outside.erase(outside.find(nums[right]));
                 inside.insert(nums[right]);
                 window_sum += nums[right];
 
-                // Simulate k swaps optimally
                 long long effective_sum = window_sum;
                 multiset<int> temp_inside = inside;
                 multiset<int> temp_outside = outside;
@@ -43,7 +40,7 @@ public:
                     int worst_inside = *temp_inside.begin();   
                     int best_outside = *temp_outside.rbegin(); 
 
-                    if(worst_inside < 0 && best_outside > 0 && best_outside > worst_inside) {
+                    if(worst_inside < 0 && best_outside > 0) {
                         effective_sum += (best_outside - worst_inside);
                         temp_inside.erase(temp_inside.begin());
                         temp_outside.erase(prev(temp_outside.end()));
@@ -78,6 +75,7 @@ public:
 
         if(mx < 0)                
             return mx;
+
         if(mn >= 0 || neg <= k)  
             return total;
 
