@@ -17,39 +17,35 @@ public:
         long long ans = LLONG_MIN;
 
         multiset<int> outside(nums.begin(), nums.end());
-        
-        for(int left = 0; left < n; left++) {
+        for(int i = 0; i < n; i++) {
+            long long windowSum = 0;
             multiset<int> inside;
-            long long window_sum = 0;
-
             outside = multiset<int>(nums.begin(), nums.end());
 
-            for(int right = left; right < n; right++) {
-
-                outside.erase(outside.find(nums[right]));
-                inside.insert(nums[right]);
-                window_sum += nums[right];
-
-                long long effective_sum = window_sum;
-                multiset<int> temp_inside = inside;
-                multiset<int> temp_outside = outside;
+            for(int j = i; j < n; j++) {
+                outside.erase(outside.find(nums[j]));
+                inside.insert(nums[j]);
+                windowSum += nums[j];
+                long long bestSum = windowSum;
+                multiset<int> tempInside = inside;
+                multiset<int> tempOutside = outside;
 
                 for(int swap = 0; swap < k; swap++) {
-                    if(temp_inside.empty() || temp_outside.empty()) break;
-
-                    int worst_inside = *temp_inside.begin();   
-                    int best_outside = *temp_outside.rbegin(); 
-
-                    if(worst_inside < 0 && best_outside > 0) {
-                        effective_sum += (best_outside - worst_inside);
-                        temp_inside.erase(temp_inside.begin());
-                        temp_outside.erase(prev(temp_outside.end()));
-                    } else {
+                    if(tempInside.empty() || tempOutside.empty())
                         break;
-                    }
-                }
+                    
+                    int worstInside = *tempInside.begin();
+                    int bestOutside = *tempOutside.rbegin();
 
-                ans = max(ans, effective_sum);
+                    if(worstInside < 0 && bestOutside > 0) {
+                        bestSum += (bestOutside - worstInside);
+                        tempInside.erase(tempInside.begin());
+                        tempOutside.erase(prev(tempOutside.end()));
+                    }
+                    else 
+                        break;
+                }
+                    ans = max(ans, bestSum);
             }
         }
 
