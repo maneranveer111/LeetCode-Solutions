@@ -1,21 +1,20 @@
 class Solution {
 public:
     int minMoves2(vector<int>& nums) {
-        int n = nums.size();
         sort(nums.begin(), nums.end());
-        int mid = 0;
+        int n = nums.size();
+        int ans;
+        if(n%2 == 0) {
+            int mid = n/2;
+            ans = (nums[mid] + nums[mid-1])/2;
+        } else {
+            ans =  nums[n/2];
+        }
 
-        if(n & 1) {
-            mid = nums[n / 2];
-        }        
-        else 
-            mid = (nums[n / 2 - 1] + nums[n / 2]) / 2;
-        
-        int moves = 0;
-        for(int i : nums) {
-            moves += abs(mid - i);
-        } 
-
-        return moves;
+        int sum = 0;
+        for(int i = 0; i<n; i++) {
+            sum += abs(ans - nums[i]);
+        }
+        return sum;
     }
 };
