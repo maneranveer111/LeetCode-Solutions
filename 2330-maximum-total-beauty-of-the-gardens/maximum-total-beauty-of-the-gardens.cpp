@@ -1,13 +1,19 @@
 class Solution {
 public:
     long long maximumBeauty(vector<int>& flowers, long long newFlowers, int target, int full, int partial) {
-        if(newFlowers == 10000000000 && target == 100000 && full == 100000 && partial == 100000)
-            return 10000000000;
         int n = flowers.size();
         sort(flowers.begin(), flowers.end());
 
         for (int i = 0; i < n; i++)
             flowers[i] = min(flowers[i], target);
+
+        // Count gardens already complete (= target after capping)
+        // Since sorted ascending, find first index at target
+        int alreadyFull = (int)(lower_bound(flowers.begin(), flowers.end(), target)
+                                - flowers.begin());
+        // alreadyFull = number of gardens with flowers[i] < target
+        // so already complete = n - alreadyFull
+        int baseFull = n - alreadyFull; // free complete gardens, cost nothing
 
         vector<long long> pre(n + 1, 0);
         for (int i = 0; i < n; i++)
@@ -15,27 +21,38 @@ public:
 
         long long ans = 0;
 
-        for (int j = 0; j <= n; j++) {
-            long long spent = (long long)target * j - (pre[n] - pre[n - j]);
+        // j = additional gardens we choose to make complete (from the non-full ones)
+        // j ranges over [0, alreadyFull] since only non-full gardens need spending
+        for (int j = 0; j <= alreadyFull; j++) {
+            // Pick the j largest among the incomplete gardens (indices alreadyFull-j .. alreadyFull-1)
+            long long spent = (long long)target * j 
+                              - (pre[alreadyFull] - pre[alreadyFull - j]);
             if (spent > newFlowers) break;
 
             long long rem = newFlowers - spent;
-            int incIdx = n - j;
+            int incIdx = alreadyFull - j; // remaining incomplete gardens
+            int totalFull = baseFull + j;  // total complete gardens
 
             if (incIdx == 0) {
-                ans = max(ans, (long long)j * full);
+                ans = max(ans, (long long)totalFull * full);
                 continue;
             }
-            long long lo = 0, hi = min((long long)target - 1, flowers[incIdx - 1] + rem);
+
+            // Binary search for max achievable minimum across incomplete gardens
+            long long lo = 0, hi = min((long long)(target - 1),
+                                       flowers[incIdx - 1] + rem);
+
             while (lo < hi) {
-                long long mid = (lo + hi + 1) / 2;
-                int pos = lower_bound(flowers.begin(), flowers.begin() + incIdx, mid) - flowers.begin();
-                long long c = mid * pos - pre[pos];
-                if (c <= rem) lo = mid;
+                long long mid = lo + (hi - lo + 1) / 2;
+                int pos = (int)(lower_bound(flowers.begin(),
+                                            flowers.begin() + incIdx, mid)
+                                - flowers.begin());
+                long long cost = mid * pos - pre[pos];
+                if (cost <= rem) lo = mid;
                 else hi = mid - 1;
             }
 
-            ans = max(ans, (long long)j * full + lo * partial);
+            ans = max(ans, (long long)totalFull * full + lo * partial);
         }
 
         return ans;
