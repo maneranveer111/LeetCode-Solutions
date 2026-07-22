@@ -14,15 +14,6 @@ public:
     vector<TreeNode*> ans; 
     unordered_set<int> st;
 
-    void print(TreeNode* root) {
-        if(!root)
-            return;
-        print(root->left);
-        print(root->right);
-
-        cout << root-> val << " ";
-    }
-
     TreeNode* helper(TreeNode* root, bool isRoot) {
         if(!root)   
             return nullptr;
@@ -31,7 +22,7 @@ public:
 
         if(isRoot && !deleted) {
             ans.push_back(root);
-            print(root);
+            // print(root);
             cout << endl;
         }
 
