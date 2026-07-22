@@ -2,7 +2,7 @@ class Solution {
 public:
     bool helper(int idx, string& curr, string& num) {
         if (idx == num.size())
-            return curr <= num;   // validate the full number, not just prefixes
+            return curr <= num;  
 
         if (curr > num.substr(0, idx))
             return false;
