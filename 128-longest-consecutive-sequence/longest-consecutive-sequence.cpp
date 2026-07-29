@@ -19,31 +19,21 @@ public:
         // }
         // return maxlength;
         
-        set<int> store, curr;
-        unordered_map<int, int> check;
+        unordered_set<int> mp(nums.begin(), nums.end());
+        int maxLen = 0;
 
-        for(int i = 0; i < nums.size(); i++)
-            store.insert(nums[i]);
+        for(int x : mp) {
 
-        nums.erase(unique(nums.begin(), nums.end()), nums.end());
-        int currLen = 0, maxLen = 0;
-        for(int i : nums) {
-            int x = i;
-            if(!curr.count(x)) {
-                currLen = 1;
-                while(store.count(x + 1)) {
-                    curr.insert(x);
-                    if(check.count(x + 1)) {
-                        currLen += check[x + 1];
-                        break;
-                    }
+            if(!mp.count(x - 1)) {
+                int currLen = 1;
+                int curr = x;
 
+                while(mp.count(curr + 1)) {
                     currLen++;
-                    x += 1;
+                    curr++;
                 }
 
-                check[i] = currLen;
-                maxLen = max(currLen, maxLen);
+                maxLen = max(maxLen, currLen);
             }
         }
 
