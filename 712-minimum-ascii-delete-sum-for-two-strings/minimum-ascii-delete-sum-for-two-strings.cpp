@@ -49,9 +49,9 @@ public:
                 if(s1[i] == s2[j])
                     dp[i][j] = dp[i + 1][j + 1];
                 else {
-                    int deleteFromS1 = (int)s1[i] + dp[i + 1][j];
-                    int deleteFromS2 = (int)s2[j] + dp[i][j + 1];
-                    dp[i][j] = min(deleteFromS1, deleteFromS2);
+                    int from1 = (int)s1[i] + dp[i + 1][j];
+                    int from2 = (int)s2[j] + dp[i][j + 1];
+                    dp[i][j] = min(from1, from2);
                 }    
             } 
         }
