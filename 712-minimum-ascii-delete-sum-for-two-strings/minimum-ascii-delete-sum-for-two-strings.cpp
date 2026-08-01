@@ -35,8 +35,28 @@ public:
 
     int minimumDeleteSum(string s1, string s2) {
         int n = s1.size(), m = s2.size();
-        memo.assign(n, vector<int>(m, -1));
+        // memo.assign(n, vector<int>(m, -1));
+        vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
 
-        return helper(s1, s2, 0, 0);
+        for(int i = n - 1; i >= 0; i--) 
+            dp[i][m] = dp[i + 1][m] + (int)s1[i];
+        
+        for(int j = m - 1; j >= 0; j--)
+            dp[n][j] = dp[n][j + 1] + (int)s2[j];
+
+        for(int i = n - 1; i >= 0; i--) {
+            for(int j = m - 1; j >= 0; j--) {
+                if(s1[i] == s2[j])
+                    dp[i][j] = dp[i + 1][j + 1];
+                else {
+                    int deleteFromS1 = (int)s1[i] + dp[i + 1][j];
+                    int deleteFromS2 = (int)s2[j] + dp[i][j + 1];
+                    dp[i][j] = min(deleteFromS1, deleteFromS2);
+                }    
+            } 
+        }
+
+        // return helper(s1, s2, 0, 0);
+        return dp[0][0];
     }
 };
