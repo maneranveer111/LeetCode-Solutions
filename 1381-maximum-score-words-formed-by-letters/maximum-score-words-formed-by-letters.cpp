@@ -15,7 +15,7 @@ public:
         return scr;
     }
 
-    string encodeState() {
+    string findKey() {
         string s;
         s.reserve(26);
         for(char c = 'a'; c <= 'z'; c++) {
@@ -28,7 +28,7 @@ public:
         if(idx == n)
             return 0;
 
-        string key = to_string(idx) + "#" + encodeState();
+        string key = to_string(idx) + "#" + findKey();
         if(memo.count(key))
             return memo[key];
 
