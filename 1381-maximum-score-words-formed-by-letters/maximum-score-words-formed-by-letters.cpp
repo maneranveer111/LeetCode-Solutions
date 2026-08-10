@@ -28,7 +28,7 @@ public:
         if(idx == n)
             return 0;
 
-        string key = to_string(idx) + "_" + encodeState();
+        string key = to_string(idx) + "#" + encodeState();
         if(memo.count(key))
             return memo[key];
 
