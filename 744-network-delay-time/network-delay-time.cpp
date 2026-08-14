@@ -4,39 +4,38 @@ public:
         vector<vector<pair<int, int>>> adj(n + 1);
         vector<int> dis(n + 1, INT_MAX);
 
-        for(auto arr : times) {
-            adj[arr[0]].push_back({arr[1], arr[2]});
-        } 
+        for(auto edg : times) {
+            adj[edg[0]].push_back({edg[1], edg[2]});
+        }
 
         priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
-        
         dis[k] = 0;
         pq.push({0, k});
 
         while(!pq.empty()) {
-            int node = pq.top().second;
-            int dist = pq.top().first;
+            auto tmp = pq.top();
             pq.pop();
+            int node = tmp.second;
+            int dist = tmp.first;
 
-            for(auto it : adj[node]) {
-                int nei = it.first;
-                int ndis = it.second;
+            for(auto nei : adj[node]) {
+                int wt = nei.second;
+                int poi = nei.first;
 
-                if(dist + ndis < dis[nei]) {
-                    dis[nei] = dist + ndis;
-                    pq.push({dist + ndis, nei});
+                if(dist + wt < dis[poi]) {
+                    dis[poi] = dist + wt;
+                    pq.push({dis[poi], poi});
                 }
             }
         }
 
-        int maxi = INT_MIN;
-        
+        int ans = INT_MIN;
         for(int i = 1; i <= n; i++) {
             if(dis[i] == INT_MAX)
                 return -1;
-            maxi = max(maxi, dis[i]);
-        } 
+            ans = max(ans, dis[i]);
+        }
 
-        return maxi;
+        return ans;
     }
 };
