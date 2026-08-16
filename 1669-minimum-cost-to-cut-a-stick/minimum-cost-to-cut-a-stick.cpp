@@ -32,6 +32,24 @@ public:
 
         memo.assign(m + 2, vector<int>(m + 2, -1));
 
-        return helper(1, m, newCuts);
+        vector<vector<int>> dp(m + 2, vector<int>(m + 2, 0));
+
+        for(int i = m; i >= 1; i--) {
+            for(int j = i; j <= m; j++) {
+                int ans = INT_MAX;
+
+                for(int k = i; k <= j; k++) {
+                    int curr = newCuts[j + 1] - newCuts[i - 1];
+                    curr += dp[i][k - 1] + dp[k + 1][j];
+
+                    ans = min(curr, ans);
+                }
+
+                dp[i][j] = ans;
+            }
+        }
+
+        // return helper(1, m, newCuts);
+        return dp[1][m];
     }
 };
