@@ -40,6 +40,30 @@ public:
             preSum[i] = sum;
         }
 
-        return helper(1, n);
+        vector<vector<int>> dp(n + 1, vector<int>(n + 1, 0));
+
+        for(int i = n; i >= 1; i--) { 
+            for(int j = i; j <= n; j++) {
+                int ans = 0;
+
+                for(int k = i; k < j; k++) {
+                    int lft = preSum[k] - preSum[i - 1];
+                    int rht = preSum[j] - preSum[k];
+
+                    if(lft > rht) {
+                        ans = max(ans, rht + dp[k + 1][j]);
+                    }
+                    else if(rht > lft)
+                        ans = max(ans, lft + dp[i][k]);
+                    else
+                        ans = max(ans, lft + max(dp[i][k], dp[k + 1][j]));
+                }
+                
+                dp[i][j] = ans;
+            }
+        }
+
+        return dp[1][n];
+        // return helper(1, n);
     }
 };
