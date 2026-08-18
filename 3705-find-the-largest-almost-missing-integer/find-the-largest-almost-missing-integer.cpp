@@ -2,24 +2,31 @@ class Solution {
 public:
     int largestInteger(vector<int>& nums, int k) {
         int n = nums.size();
-        unordered_map<int, int> windowCount; // value -> number of windows containing it
+        
+        if(n == k)
+            return *max_element(nums.begin(), nums.end());
 
-        // Slide over every window of size k
-        for (int start = 0; start + k <= n; start++) {
-            unordered_set<int> seenInWindow;
-            for (int i = start; i < start + k; i++)
-                seenInWindow.insert(nums[i]);
+        unordered_map<int, int> mp;
 
-            // Each distinct value in this window contributes +1 to its count
-            for (int val : seenInWindow)
-                windowCount[val]++;
+        for(int x : nums)
+            mp[x]++;
+        
+        if(k == 1) {
+            int ans = -1;
+            for(auto [key, val] : mp) {
+                if(val == 1)
+                    ans = max(ans, key);
+            }
+
+            return ans;
         }
-
         int ans = -1;
-        for (auto& [val, cnt] : windowCount) {
-            if (cnt == 1)
-                ans = max(ans, val);
-        }
+
+        if (mp[nums[0]] == 1)
+            ans = max(ans, nums[0]);
+
+        if (mp[nums[n - 1]] == 1)
+            ans = max(ans, nums[n - 1]);
 
         return ans;
     }
