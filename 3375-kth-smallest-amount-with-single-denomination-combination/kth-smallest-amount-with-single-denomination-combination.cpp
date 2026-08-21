@@ -42,7 +42,7 @@ public:
     long long findKthSmallest(vector<int>& coins, int k) {
         n = coins.size();
         long long low = *min_element(coins.begin(), coins.end());
-        long long hi = (long long)*min_element(coins.begin(), coins.end()) * k;
+        long long hi = (long long)*max_element(coins.begin(), coins.end()) * k;
         long long ans = hi;
 
         preCoumputeLCM(coins);
