@@ -47,11 +47,7 @@ public:
             vec.push_back({feq, s});
         }
 
-        sort(vec.begin(), vec.end(), [](auto a, auto b) {
-            if(a.first == b.first)
-                return a.second < b.second;
-            return a.first < b.first;
-        });
+        sort(vec.begin(), vec.end());
 
         vector<string> ans;
 
