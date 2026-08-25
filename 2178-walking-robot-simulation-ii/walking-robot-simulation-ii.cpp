@@ -1,49 +1,87 @@
 class Robot {
-private:
-    vector<tuple<int, int, string>> path;
-    int peri;
-    int curr;
-    bool moved;
-
 public:
+    int wid;
+    int hei;
+    int dir = 0;
+    vector<string> direction = {"East", "North", "West", "South"};
+    int x = 0, y = 0;
+    int total = 0;
+
     Robot(int width, int height) {
-        peri = 2 * (width - 1) + 2 * (height - 1);
-        curr = 0;
-        moved = false;
-
-        for (int i = 0; i <= width - 1; i++)
-            path.push_back({i, 0, "East"});
-
-        for (int j = 1; j <= height - 1; j++)
-            path.push_back({width - 1, j, "North"});
-
-        for (int i = width - 2; i >= 0; i--)
-            path.push_back({i, height - 1, "West"});
-
-        for (int j = height - 2; j >= 1; j--)
-            path.push_back({0, j, "South"});
+        wid = width - 1, hei = height - 1;
+        total = 2 * (width + height - 2);
     }
+    
+    void step(int k) {
+        if (total == 0) return;
 
-    void step(int num) {
-        moved = true;
-        curr = (curr + num) % peri;
+        k %= total;
+
+        if (k == 0) {
+            if (x == 0 && y == 0)
+                dir = 3;
+            return;
+        }
+
+        if (dir == 0) {
+            if (x + k <= wid) {
+                x = x + k;
+                return;
+            }
+            else {
+                int tmp = x;
+                dir++;
+                dir %= 4;
+                x = wid;
+                step(tmp + k - wid);
+            }
+        }
+        else if (dir == 1) {
+            if (y + k <= hei) {
+                y = y + k;
+                return;
+            }
+            else {
+                int tmp = y;
+                dir++;
+                dir %= 4;
+                y = hei;
+                step(tmp + k - hei);
+            }
+        }
+        else if (dir == 2) {
+            if (x - k >= 0) {
+                x -= k;
+                return;
+            }
+            else {
+                int tmp = x;
+                dir++;
+                dir %= 4;
+                x = 0;
+                step(k - tmp);
+            }
+        }
+        else if (dir == 3) {
+            if (y - k >= 0) {
+                y -= k;
+                return;
+            }
+            else {
+                int tmp = y;
+                dir++;
+                dir %= 4;
+                y = 0;
+                step(k - tmp);
+            }
+        }
     }
-
+    
     vector<int> getPos() {
-        return {get<0>(path[curr]), get<1>(path[curr])};
+        return {x, y};
     }
 
     string getDir() {
-        if (!moved) return "East";
-        if (curr == 0) return "South";
-        return get<2>(path[curr]);
+        return direction[dir];
     }
 };
-
-/**
- * Your Robot object will be instantiated and called as such:
- * Robot* obj = new Robot(width, height);
- * obj->step(num);
- * vector<int> param_2 = obj->getPos();
- * string param_3 = obj->getDir();
- */
