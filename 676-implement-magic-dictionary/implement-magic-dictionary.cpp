@@ -24,7 +24,6 @@ public:
                 } 
                 
                 if(mismatch == 1) {
-                    cout << s << endl;
                     return true;
                 }
             }
