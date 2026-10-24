@@ -45,14 +45,13 @@ public:
                 string mail = accounts[i][j];
 
                 if(mailToNode.count(mail)) {
-                    int node = mailToNode[mail];
-                    djs.unionBySize(i, node);
-                } 
-                else{
-                    mailToNode[mail] = i;
+                    int k = mailToNode[mail];
+                    djs.unionBySize(i, k);
                 }
+                else 
+                    mailToNode[mail] = i;
             }
-        }    
+        }
 
         vector<vector<string>> mergeMail(n);
 
@@ -62,18 +61,15 @@ public:
         }
 
         vector<vector<string>> ans;
+
         for(int i = 0; i < n; i++) {
             if(mergeMail[i].size() == 0)
                 continue;
-            
-            string name = accounts[i][0];
             vector<string> tmp;
-            tmp.push_back(name);
-            sort(mergeMail[i].begin(), mergeMail[i].end());
-
-            for(auto str : mergeMail[i]) {
+            tmp.push_back(accounts[i][0]);
+            for(string str : mergeMail[i])
                 tmp.push_back(str);
-            }
+            sort(tmp.begin() + 1, tmp.end());
 
             ans.push_back(tmp);
         }
